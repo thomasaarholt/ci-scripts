@@ -9,14 +9,18 @@ jobs:
         python.version: '3.7'
 
   steps:
-  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+  - bash: |
+      echo "##vso[task.prependpath]$CONDA/bin"
+      conda init
     displayName: Add conda to PATH
 
   - bash: |
-      conda create --yes --quiet --name test_env hyperspy-base pytest-mpl -c conda-forge 
+      conda create --yes --quiet --name test_env python=$PYTHON_VERSION
+      conda env --name test_env update --file conda_environment.yml
     displayName: Setup Anaconda packages
 
   - bash: |
-      source activate test_env
+      conda activate test_env
+      pip install https://github.com/hyperspy/hyperspy.git
       pytest --mpl --pyargs hyperspy
     displayName: pytest

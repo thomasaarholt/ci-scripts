@@ -1,0 +1,32 @@
+name: test_env
+channels:
+- defaults
+- conda-forge
+dependencies:
+- numpy
+- ipython
+- scipy
+- matplotlib
+- traits
+- natsort
+- requests
+- tqdm
+- sympy
+- dill
+- h5py
+- python-dateutil
+- ipyparallel
+- dask
+- scikit-image
+- pint
+- numexpr
+- statsmodels
+- sparse
+- imageio
+- pyyaml
+- PTable
+# Dev dependencies
+- pytest
+- pytest-mpl
+- pytest-cov
+
