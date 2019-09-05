@@ -1,0 +1,67 @@
+language: generic
+
+env:
+  # We set the default value in global and changed it in the matrix when necessary
+  global:
+    - ENV=conda
+    - MINIMAL_ENV=false
+    - DEPS="hyperspy"
+    - DEPS_OPTIONAL="hyperspy"
+    - TEST_DEPS="pytest pytest-cov pytest-mpl"
+    - MPLBACKEND="agg"
+    - TEST_ARG_OPT="--mpl"
+
+services:
+  - xvfb
+
+matrix:
+  include:
+    # All tests run for the latest supported Python version in Linux
+  - env: export CONDA_PYTHON=3.7
+  - env: export CONDA_PYTHON=3.7; MINIMAL_ENV=true
+  - env: export ENV=pip
+    language: python
+    python: 3.7
+  - env: export ENV=pip; MINIMAL_ENV=true
+    language: python
+    python: 3.7
+    # Only standard test for older supported versions of Python in Linux
+  - env: export CONDA_PYTHON=3.6
+    # All tests, but the min requirements test run for the latest supported Python version in OSx
+  - env: export CONDA_PYTHON=3.7
+    os: osx
+  - env: export CONDA_PYTHON=3.6
+    os: osx
+    if: tag IS present
+
+before_install:
+  - git clone --depth 1 git://github.com/ericpre/ci.git
+  - source ci/travis/setup_travis.sh
+
+install:
+  # Unselect this line to install the package
+  # - pip install .
+
+script:
+  - which python
+  - python -c 'import matplotlib.pyplot as plt; print("Matplotlib backend:", plt.get_backend())';
+  - if [ $ENV == pip ]; then TEST_ARG_OPT=""; fi
+  - pytest --pyargs hyperspy --cov=hyperspy $TEST_ARG_OPT;
+
+after_success:
+- coveralls
+- python setup.py bdist_wheel sdist;
+
+before_deploy:
+- export DISTRIB=$(ls ./dist/*);
+
+deploy:
+  provider: releases
+  api_key:
+    # ericpre, secure key define in the travis account settings
+    secure: ${GITHUB_TOKEN_ERICPRE}
+  file: "${DISTRIB}"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $MINIMAL_ENV = false
