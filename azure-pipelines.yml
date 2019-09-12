@@ -19,18 +19,17 @@ jobs:
     displayName: Add conda to PATH
 
   - bash: |
-      conda config --append channels conda-forge
-      conda create --yes --quiet --name test_env python=$PYTHON_VERSION
-      conda env update --name test_env --file conda_environment.yml
-      source activate test_env
-      conda install $TEST_DEPS
-      conda info
-      conda list
+      source conda_setup_environment.sh
+
     displayName: Setup Anaconda packages
 
   - bash: |
       source activate test_env
       # Install package using pip
       pip install git+https://github.com/hyperspy/hyperspy.git
+    displayName: Install package
+
+  - bash: |
+      source activate test_env
       pytest --mpl --pyargs hyperspy
     displayName: pytest
