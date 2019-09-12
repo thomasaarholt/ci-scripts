@@ -30,7 +30,9 @@ jobs:
   - bash: |
       source activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      # pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install hyperspy
+      conda list
     displayName: Install package
 
   - bash: |
@@ -64,7 +66,9 @@ jobs:
   - script: |
       call activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      # pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install hyperspy
+      conda list
     displayName: Install package
 
   - script: |
@@ -102,7 +106,9 @@ jobs:
   - bash: |
       source activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      # pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install hyperspy
+      conda list
     displayName: Install package
 
   - bash: |
