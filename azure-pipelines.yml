@@ -13,16 +13,19 @@ jobs:
   steps:
   - bash: |
       echo "##vso[task.prependpath]$CONDA/bin"
-      conda init
     displayName: Add conda to PATH
 
   - bash: |
       conda create --yes --quiet --name test_env python=$PYTHON_VERSION
-      conda env --name test_env update --file conda_environment.yml
+      conda env update --name test_env --file conda_environment.yml
+      source activate test_env
+      conda info
+      conda list
     displayName: Setup Anaconda packages
 
   - bash: |
-      conda activate test_env
-      pip install https://github.com/hyperspy/hyperspy.git
+      source activate test_env
+      # Install package using pip
+      pip install git+https://github.com/hyperspy/hyperspy.git
       pytest --mpl --pyargs hyperspy
     displayName: pytest
