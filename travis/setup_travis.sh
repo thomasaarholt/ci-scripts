@@ -6,6 +6,8 @@ fi
 
 # Setup environment
 if [[ $MINIMAL_ENV == false ]] ; then
-  DEPS="${DEPS} ${DEPS_OPTIONAL}";
+  DEPS="${DEPS_OPTIONAL}"
+else
+  DEPS=""
 fi
 source $DIRECTORY/travis_install_with_$ENV.sh

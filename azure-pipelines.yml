@@ -1,3 +1,6 @@
+variables:
+  TEST_DEPS: pytest pytest-cov pytest-mpl
+
 jobs:
 - job:
   displayName: ubuntu-16.04
@@ -16,9 +19,11 @@ jobs:
     displayName: Add conda to PATH
 
   - bash: |
+      conda config --append channels conda-forge
       conda create --yes --quiet --name test_env python=$PYTHON_VERSION
       conda env update --name test_env --file conda_environment.yml
       source activate test_env
+      conda install $TEST_DEPS
       conda info
       conda list
     displayName: Setup Anaconda packages

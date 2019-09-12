@@ -3,8 +3,8 @@ channels:
 - defaults
 - conda-forge
 dependencies:
+# Minimal dependencies
 - numpy
-- ipython
 - scipy
 - matplotlib
 - traits
@@ -19,14 +19,10 @@ dependencies:
 - dask
 - scikit-image
 - pint
-- numexpr
 - statsmodels
+- numexpr
 - sparse
 - imageio
 - pyyaml
 - PTable
-# Dev dependencies
-- pytest
-- pytest-mpl
-- pytest-cov
 
