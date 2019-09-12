@@ -15,11 +15,15 @@ jobs:
 
   steps:
   - bash: |
+      git clone --depth 1 git://github.com/ericpre/ci.git
+    displayName: Add conda to PATH
+
+  - bash: |
       echo "##vso[task.prependpath]$CONDA/bin"
     displayName: Add conda to PATH
 
   - bash: |
-      source conda_setup_environment.sh
+      source ci/conda_setup_environment.sh
 
     displayName: Setup Anaconda packages
 
