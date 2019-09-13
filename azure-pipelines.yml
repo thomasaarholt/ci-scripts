@@ -30,7 +30,7 @@ jobs:
   - bash: |
       source activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install -e git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
@@ -77,16 +77,16 @@ jobs:
   - script: |
       call activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install -e git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
   - script: |
       call activate test_env
-      python -c 'import matplotlib.pyplot as plt; print(plt.get_backend())'
-      python -c 'import hyperspy.api as hs; print(hs.print_known_signal_types())'
-      python -c 'import hyperspy; print(hyperspy.__version__)'
-      python -c 'import hyperspy; print(hyperspy.__file__)'
+      python -c "import matplotlib.pyplot as plt; print(plt.get_backend())"
+      python -c "import hyperspy.api as hs; print(hs.print_known_signal_types())"
+      python -c "import hyperspy; print(hyperspy.__version__)"
+      python -c "import hyperspy; print(hyperspy.__file__)"
       pytest --mpl --pyargs hyperspy
     displayName: pytest
 
@@ -126,7 +126,7 @@ jobs:
   - bash: |
       source activate test_env
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install -e git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
