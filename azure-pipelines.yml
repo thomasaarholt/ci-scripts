@@ -23,6 +23,7 @@ jobs:
     displayName: Add conda to PATH
 
   - bash: |
+      conda update -y conda
       conda config --append channels conda-forge
       conda create --yes --quiet --name test_env python=$PYTHON_VERSION
       conda env update --name test_env --file conda_environment.yml
