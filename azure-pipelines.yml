@@ -23,15 +23,21 @@ jobs:
     displayName: Add conda to PATH
 
   - bash: |
-      source ci/conda_setup_environment.sh
+      conda config --append channels conda-forge
+      conda create --yes --quiet --name test_env python=$PYTHON_VERSION
+      conda env update --name test_env --file conda_environment.yml
+      source activate test_env
+      conda install -y $DEPS $TEST_DEPS
+      conda info
+      conda list
+      # source ci/conda_setup_environment.sh
 
     displayName: Setup Anaconda packages
 
   - bash: |
       source activate test_env
       # Install package using pip
-      # pip install git+https://github.com/hyperspy/hyperspy.git
-      pip install hyperspy
+      pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
@@ -60,14 +66,20 @@ jobs:
     displayName: Add conda to PATH
 
   - bash: |
-      source ci/conda_setup_environment.sh
+      conda config --append channels conda-forge
+      conda create --yes --quiet --name test_env python=$PYTHON_VERSION
+      conda env update --name test_env --file conda_environment.yml
+      source activate test_env
+      conda install -y $DEPS $TEST_DEPS
+      conda info
+      conda list
+      # source ci/conda_setup_environment.sh
     displayName: Setup Anaconda packages
 
   - script: |
       call activate test_env
       # Install package using pip
-      # pip install git+https://github.com/hyperspy/hyperspy.git
-      pip install hyperspy
+      pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
@@ -106,8 +118,7 @@ jobs:
   - bash: |
       source activate test_env
       # Install package using pip
-      # pip install git+https://github.com/hyperspy/hyperspy.git
-      pip install hyperspy
+      pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
