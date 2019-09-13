@@ -36,6 +36,7 @@ jobs:
 
   - bash: |
       source activate test_env
+      conda list
       pytest --mpl --pyargs hyperspy
     displayName: pytest
 
