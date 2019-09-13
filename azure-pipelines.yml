@@ -42,7 +42,9 @@ jobs:
       python -c 'import hyperspy.api as hs; print(hs.print_known_signal_types())'
       python -c 'import hyperspy; print(hyperspy.__version__)'
       python -c 'import hyperspy; print(hyperspy.__file__)'
+      python -c 'from traits.etsconfig.api import ETSConfig; print("ETSConfig.toolkit:", ETSConfig.toolkit)'
       pytest --mpl hyperspy
+      which pytest
     displayName: pytest
 
 - job:
