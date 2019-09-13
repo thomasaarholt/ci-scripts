@@ -37,6 +37,9 @@ jobs:
   - bash: |
       source activate test_env
       conda list
+      python -c 'import matplotlib.pyplot as plt; print(plt.get_backend())'
+      python -c 'import hyperspy.api as hs; print(hs.print_known_signal_types())'
+      python -c 'import hyperspy; print(hyperspy.__version__)'
       pytest --mpl --pyargs hyperspy
     displayName: pytest
 
