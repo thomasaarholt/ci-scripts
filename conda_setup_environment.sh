@@ -5,3 +5,4 @@ conda env update --name test_env --file conda_environment.yml
 source activate testenv
 conda install -y $DEPS $TEST_DEPS
 conda info
+conda list
