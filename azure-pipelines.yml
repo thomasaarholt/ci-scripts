@@ -1,5 +1,5 @@
 variables:
-  TEST_DEPS: pytest pytest-cov pytest-mpl pytest-azurepipelines
+  TEST_DEPS: pytest pytest-cov pytest-mpl pytest-azurepipelines pytest-faulthandler
 
 jobs:
 - job:
