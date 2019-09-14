@@ -1,0 +1,56 @@
+environment:
+
+  global:
+    MPLBACKEND: agg
+
+  matrix:
+     - PY_VERSION: 3.7
+       PLATFORM: x64
+#     - PY_VERSION: 3.7
+#       PLATFORM: x86
+#     - PY_VERSION: 3.6
+#       PLATFORM: x64
+#     - PY_VERSION: 3.6
+#       PLATFORM: x86
+#       TAG_SCENARIO: true
+
+for:
+-
+  # tagged scenario
+  matrix:
+    only:
+      - TAG_SCENARIO: true
+
+  skip_non_tags: true
+
+install:
+  - ps: Add-AppveyorMessage "Clone CI repo"
+  - git clone --depth 1 git://github.com/ericpre/ci.git
+
+  - ps: Add-AppveyorMessage "Setting up Miniconda"
+  - ps: ci\\appveyor\\conda_activate.bat
+  - ps: ci\\appveyor\\conda_setup_environment.bat
+  - activate testenv
+
+  - ps: Add-AppveyorMessage "Install package"
+  - pip install git+https://github.com/hyperspy/hyperspy.git
+  - conda list
+
+test_script:
+  # Run the project tests
+  - ps: Add-AppveyorMessage "Running tests..."
+  - pytest --mpl --pyargs hyperspy
+  - ps: Add-AppveyorMessage "Testing completed."
+
+after_test:
+  - python setup.py clean
+  - python setup.py bdist_wheel
+
+artifacts:
+  - path: dist\*.whl
+    name: win_wheels
+
+on_failure:
+  - ps: $Env:image_comparison_filename = 'image_comparison_' + $Env:PYTHON_VERSION + '_' + $Env:PYTHON_ARCH + 'bits.zip'
+  - ps: 7z a -r $Env:image_comparison_filename C:\Users\appveyor\AppData\Local\Temp\1\*png
+  - ps: Push-AppveyorArtifact $Env:image_comparison_filename

@@ -35,6 +35,7 @@ matrix:
     if: tag IS present
 
 before_install:
+  # Clone the ci repo to get the ci setup scripts and execute the script
   - git clone --depth 1 git://github.com/ericpre/ci.git
   - source ci/travis/setup_travis.sh
 
