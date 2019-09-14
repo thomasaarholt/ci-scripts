@@ -102,13 +102,7 @@ jobs:
     displayName: Take ownership of conda installation
 
   - bash: |
-      conda config --append channels conda-forge
-      conda create --yes --quiet --name $ENV_NAME python=$PYTHON_VERSION
-      conda env update --name $ENV_NAME --file conda_environment.yml
-      source activate $ENV_NAME
-      conda install -y $DEPS $TEST_DEPS
-      conda info
-      conda list
+      source ci/conda_setup_environment.sh
     displayName: Setup Anaconda packages
 
   - bash: |
