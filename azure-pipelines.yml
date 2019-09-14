@@ -62,15 +62,15 @@ jobs:
       source ci/conda_setup_environment.sh
     displayName: Setup Anaconda packages
 
-  - script: |
-      call activate $ENV_NAME
+  - bash: |
+      source activate $ENV_NAME
       # Install package using pip
       pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
-  - script: |
-      call activate $ENV_NAME
+  - bash: |
+      source activate $ENV_NAME
       python -c "import matplotlib.pyplot as plt; print(plt.get_backend())"
       python -c "import hyperspy.api as hs; print(hs.print_known_signal_types())"
       python -c "import hyperspy; print(hyperspy.__version__)"
