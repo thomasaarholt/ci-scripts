@@ -1,3 +1,6 @@
+variables:
+  ENV_NAME: test_env
+
 jobs:
 - job:
   displayName: ubuntu-16.04
@@ -25,14 +28,14 @@ jobs:
     displayName: Setup Anaconda packages
 
   - bash: |
-      source activate test_env
+      source activate $ENV_NAME
       # Install package using pip
       pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
   - bash: |
-      source activate test_env
+      source activate $ENV_NAME
       pytest --mpl --pyargs hyperspy
     displayName: pytest
 
@@ -60,14 +63,14 @@ jobs:
     displayName: Setup Anaconda packages
 
   - script: |
-      call activate test_env
+      call activate $ENV_NAME
       # Install package using pip
       pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
   - script: |
-      call activate test_env
+      call activate $ENV_NAME
       python -c "import matplotlib.pyplot as plt; print(plt.get_backend())"
       python -c "import hyperspy.api as hs; print(hs.print_known_signal_types())"
       python -c "import hyperspy; print(hyperspy.__version__)"
@@ -100,16 +103,16 @@ jobs:
 
   - bash: |
       conda config --append channels conda-forge
-      conda create --yes --quiet --name test_env python=$PYTHON_VERSION
-      conda env update --name test_env --file conda_environment.yml
-      source activate test_env
+      conda create --yes --quiet --name $ENV_NAME python=$PYTHON_VERSION
+      conda env update --name $ENV_NAME --file conda_environment.yml
+      source activate $ENV_NAME
       conda install -y $DEPS $TEST_DEPS
       conda info
       conda list
     displayName: Setup Anaconda packages
 
   - bash: |
-      source activate test_env
+      source activate $ENV_NAME
       # Install package using pip
       git clone --depth 1 git://github.com/hyperspy/hyperspy.git
       pip install hyperspy/
@@ -117,7 +120,7 @@ jobs:
     displayName: Install package
 
   - bash: |
-      source activate test_env
+      source activate $ENV_NAME
       python -c 'import matplotlib.pyplot as plt; print(plt.get_backend())'
       python -c 'import hyperspy.api as hs; print(hs.print_known_signal_types())'
       python -c 'import hyperspy; print(hyperspy.__version__)'

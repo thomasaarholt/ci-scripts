@@ -4,6 +4,7 @@ env:
   # We set the default value in global and changed it in the matrix when necessary
   global:
     - ENV=conda
+    - ENV_NAME=test_env
     - MINIMAL_ENV=false
     - DEPS_OPTIONAL="scikit-learn"
     - TEST_DEPS="pytest pytest-cov pytest-mpl"
