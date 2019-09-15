@@ -9,9 +9,9 @@ jobs:
   strategy:
     matrix:
       Python37:
-        python.version: '3.7'
+        CONDA_PYTHON_VERSION: '3.7'
       Python36:
-        python.version: '3.6'
+        CONDA_PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
@@ -46,9 +46,9 @@ jobs:
   strategy:
     matrix:
       Python37:
-        python.version: '3.7'
+        CONDA_PYTHON_VERSION: '3.7'
       Python36:
-        python.version: '3.6'
+        CONDA_PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
@@ -71,10 +71,6 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
-      python -c "import matplotlib.pyplot as plt; print(plt.get_backend())"
-      python -c "import hyperspy.api as hs; print(hs.print_known_signal_types())"
-      python -c "import hyperspy; print(hyperspy.__version__)"
-      python -c "import hyperspy; print(hyperspy.__file__)"
       pytest --mpl --pyargs hyperspy
     displayName: pytest
 
@@ -85,7 +81,7 @@ jobs:
   strategy:
     matrix:
       Python37:
-        python.version: '3.7'
+        CONDA_PYTHON_VERSION: '3.7'
 
   steps:
   - bash: |
@@ -108,16 +104,12 @@ jobs:
   - bash: |
       source activate $ENV_NAME
       # Install package using pip
-      git clone --depth 1 git://github.com/hyperspy/hyperspy.git
-      pip install hyperspy/
+      pip install git+https://github.com/hyperspy/hyperspy.git
       conda list
     displayName: Install package
 
   - bash: |
       source activate $ENV_NAME
-      python -c 'import matplotlib.pyplot as plt; print(plt.get_backend())'
-      python -c 'import hyperspy.api as hs; print(hs.print_known_signal_types())'
-      python -c 'import hyperspy; print(hyperspy.__version__)'
-      python -c 'import hyperspy; print(hyperspy.__file__)'
-      pytest --mpl hyperspy
+      pytest --mpl --pyargs hyperspy
     displayName: pytest
+
