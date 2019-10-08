@@ -1,6 +1,17 @@
 variables:
   ENV_NAME: test_env
-  MPLBACKEND: agg
+  MPLBACKEND: agg # Necessary when running test which generate matplotlib figure
+  TEST_DEPS: pytest pytest-azurepipelines
+
+trigger:
+  tags:
+    include:
+    # build on any tag
+    - '*'
+  branches:
+    include:
+    # build on all branches
+    - '*'
 
 jobs:
 - job:
@@ -37,8 +48,36 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
+      python setup.py sdist bdist_wheel
+    displayName: Generate distribution archives
+
+  - publish: $(Build.SourcesDirectory)/dist
+    artifact: dist-Linux-$(CONDA_PYTHON_VERSION)
+    displayName: Publish artifact
+
+  - bash: |
+      source activate $ENV_NAME
+      conda install -y $TEST_DEPS
+    displayName: Install test dependencies
+
+  - bash: |
+      source activate $ENV_NAME
       pytest --mpl --pyargs hyperspy
-    displayName: pytest
+    displayName: Run test suite
+
+  # Uncomment to upload artefact to Github release
+  #- task: GithubRelease@0 
+  #  displayName: 'Update GitHub Release on tag only'
+  #  # Release only on tag (branch name start with 'refs/tags/')
+  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #  inputs:
+  #    # Set the token generated with github from the developer settings/personal access tokens menu
+  #    gitHubConnection: github_token_name
+  #    action: edit # Release should already have been created
+  #    tag: $(Build.SourceBranchName)
+  #    repositoryName: organisation_name/repository_name
+  #    assets: $(Build.SourcesDirectory)/dist/*
+  #    assetUploadMode: replace
 
 - job:
   displayName: vs2017-win2016
@@ -72,8 +111,36 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
+      python setup.py sdist bdist_wheel
+    displayName: Generate distribution archives
+
+  - publish: $(Build.SourcesDirectory)/dist
+    artifact: dist-Windows-$(CONDA_PYTHON_VERSION)
+    displayName: Publish artifact
+
+  - bash: |
+      source activate $ENV_NAME
+      conda install -y $TEST_DEPS
+    displayName: Install test dependencies
+
+  - bash: |
+      source activate $ENV_NAME
       pytest --mpl --pyargs hyperspy
-    displayName: pytest
+    displayName: Run test suite
+
+  # Uncomment to upload artefact to Github release
+  #- task: GithubRelease@0 
+  #  displayName: 'Update GitHub Release'
+  #  # Release only on tag (branch name start with 'refs/tags/')
+  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #  inputs:
+  #    # Set the token generated with github from the developer settings/personal access tokens menu
+  #    gitHubConnection: github_token_name
+  #    action: edit # Release should already have been created
+  #    tag: $(Build.SourceBranchName)
+  #    repositoryName: organisation_name/repository_name
+  #    assets: $(Build.SourcesDirectory)/dist/*
+  #    assetUploadMode: replace
 
 - job:
   displayName: macOS-10.13
@@ -111,6 +178,34 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
+      python setup.py sdist bdist_wheel
+    displayName: Generate distribution archives
+
+  - publish: $(Build.SourcesDirectory)/dist
+    artifact: dist-MacOSX-$(CONDA_PYTHON_VERSION)
+    displayName: Publish artifact
+
+  - bash: |
+      source activate $ENV_NAME
+      conda install -y $TEST_DEPS
+    displayName: Install test dependencies
+
+  - bash: |
+      source activate $ENV_NAME
       pytest --mpl --pyargs hyperspy
-    displayName: pytest
+    displayName: Run test suite
+
+  # Uncomment to upload artefact to Github release
+  #- task: GithubRelease@0 
+  #  displayName: 'Update GitHub Release on tag only'
+  #  # Release only on tag (branch name start with 'refs/tags/')
+  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #  inputs:
+  #    # Set the token generated with github from the developer settings/personal access tokens menu
+  #    gitHubConnection: github_token_name
+  #    action: edit # Release should already have been created
+  #    tag: $(Build.SourceBranchName)
+  #    repositoryName: organisation_name/repository_name
+  #    assets: $(Build.SourcesDirectory)/dist/*
+  #    assetUploadMode: replace
 
