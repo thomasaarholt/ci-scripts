@@ -5,7 +5,8 @@ channels:
 dependencies:
 # Dependencies for testing
 - pytest
-- pytest-mpl
 - pytest-cov
 - pytest-faulthandler
+- pytest-mpl
+- pytest-xdist
 

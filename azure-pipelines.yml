@@ -55,7 +55,8 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
-      pytest --pyargs hyperspy
+      # pytest --pyargs hyperspy
+      python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
   # - bash: |
@@ -118,7 +119,8 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
-      pytest --pyargs hyperspy
+      # pytest --pyargs hyperspy
+      python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
   # - bash: |
@@ -187,7 +189,8 @@ jobs:
 
   - bash: |
       source activate $ENV_NAME
-      pytest --pyargs hyperspy
+      # pytest --pyargs hyperspy
+      python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
   # - bash: |

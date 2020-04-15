@@ -14,25 +14,31 @@ env:
 matrix:
   include:
     # All tests run for the latest supported Python version in Linux
-  - env: export CONDA_PYTHON_VERSION=3.7
-  - env: export CONDA_PYTHON_VERSION=3.7; MINIMAL_ENV=true
+  # - env: export CONDA_PYTHON_VERSION=3.7
+  # - env: export CONDA_PYTHON_VERSION=3.7; MINIMAL_ENV=true
+  - env: export ENV=pip
+    language: python
+    python: 3.8
   - env: export ENV=pip
     language: python
     python: 3.7
   - env: export ENV=pip; MINIMAL_ENV=true
     language: python
     python: 3.7
-    # Only standard test for older supported versions of Python in Linux
-  - env: export CONDA_PYTHON_VERSION=3.6
-    # All tests, but the min requirements test run for the latest supported Python version in OSx
-  - env: export CONDA_PYTHON_VERSION=3.7
-    os: osx
-  - env: export CONDA_PYTHON_VERSION=3.6
-    os: osx
-    if: tag IS present
+  - env: export ENV=pip
+    language: python
+    python: 3.6
+  # - env: export CONDA_PYTHON_VERSION=3.8
+  #   os: osx
+  # - env: export CONDA_PYTHON_VERSION=3.7
+  #   os: osx
+  #   if: tag IS present
+  # - env: export CONDA_PYTHON_VERSION=3.6
+  #   os: osx
+  #   if: tag IS present
 
 before_install:
-  # Clone the ci repo to get the ci setup scripts and execute the script
+  # Clone the ci-scritps repo to get the ci setup scripts and execute the script
   - git clone --depth 1 git://github.com/ericpre/ci-scripts.git
   - source ci-scripts/travis/setup_travis.sh
 
@@ -45,7 +51,8 @@ script:
   - python -c 'import matplotlib.pyplot as plt; print("Matplotlib backend:", plt.get_backend())';
   # We don't run image comparison when installing from pip because of the freetype version mismatch
   - if [ $ENV == pip ]; then PYTEST_MPL_ARGS=""; fi
-  - pytest --pyargs hyperspy --cov=hyperspy $PYTEST_MPL_ARGS;
+  # - pytest --pyargs hyperspy --cov=hyperspy $PYTEST_MPL_ARGS;
+  - python -c 'import hyperspy.api as hs'
 
 after_success:
 - coveralls
