@@ -7,7 +7,7 @@ env:
     - ENV_NAME=test_env
     - MINIMAL_ENV=false
     - DEPS_OPTIONAL="scikit-learn"
-    - TEST_DEPS="pytest pytest-cov pytest-mpl"
+    - TEST_DEPS="pytest pytest-cov" # for pip installation
     - MPLBACKEND="agg"
     - PYTEST_MPL_ARGS="--mpl"
 

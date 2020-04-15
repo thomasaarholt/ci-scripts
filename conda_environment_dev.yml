@@ -5,8 +5,6 @@ channels:
 dependencies:
 # Dependencies for testing
 - pytest
-- pytest-mpl
 - pytest-cov
-- pytest-azurepipelines
 - pytest-faulthandler
 
