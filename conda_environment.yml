@@ -3,26 +3,27 @@ channels:
 - defaults
 - conda-forge
 dependencies:
-# Minimal dependencies
-- numpy
-- scipy
-- matplotlib
-- traits
-- natsort
-- requests
-- tqdm
-- sympy
+# Minimal dependencies in alphabetical order
+- dask
 - dill
 - h5py
-- python-dateutil
-- ipyparallel
-- dask
-- scikit-image
-- pint
-- statsmodels
-- numexpr
-- sparse
 - imageio
-- pyyaml
+- ipyparallel
+- matplotlib
+- natsort
+- numexpr
+- numpy
+- pint
 - PTable
+- python-dateutil
+- pyyaml
+- requests
+- scikit-image
+- scipy
+- sparse
+- statsmodels
+- sympy
+- tifffile >=2019.07.26
+- traits
+- tqdm
 

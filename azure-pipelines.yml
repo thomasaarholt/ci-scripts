@@ -20,6 +20,8 @@ jobs:
     vmImage: 'ubuntu-16.04'
   strategy:
     matrix:
+      Python38:
+        CONDA_PYTHON_VERSION: '3.8'
       Python37:
         CONDA_PYTHON_VERSION: '3.7'
       Python36:
@@ -85,8 +87,8 @@ jobs:
     vmImage: 'vs2017-win2016'
   strategy:
     matrix:
-      Python37:
-        CONDA_PYTHON_VERSION: '3.7'
+      Python38:
+        CONDA_PYTHON_VERSION: '3.8'
       Python36:
         CONDA_PYTHON_VERSION: '3.6'
 
@@ -148,8 +150,10 @@ jobs:
     vmImage: 'macOS-10.14'
   strategy:
     matrix:
-      Python37:
-        CONDA_PYTHON_VERSION: '3.7'
+      Python38:
+        CONDA_PYTHON_VERSION: '3.8'
+      Python36:
+        CONDA_PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
