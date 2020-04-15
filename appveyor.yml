@@ -26,11 +26,11 @@ for:
 
 install:
   - ps: Add-AppveyorMessage "Clone CI repo"
-  - git clone --depth 1 git://github.com/ericpre/ci.git
+  - git clone --depth 1 git://github.com/ericpre/ci-scripts.git
 
   - ps: Add-AppveyorMessage "Setting up Miniconda"
-  - call ci\appveyor\conda_activate.bat
-  - call ci\appveyor\conda_setup_environment.bat
+  - call ci-scripts\appveyor\conda_activate.bat
+  - call ci-scripts\appveyor\conda_setup_environment.bat
   - conda activate %ENV_NAME%
 
   - ps: Add-AppveyorMessage "Install package"
