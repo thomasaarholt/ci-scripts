@@ -5,6 +5,8 @@ environment:
     MPLBACKEND: agg
 
   matrix:
+     - CONDA_PYTHON_VERSION: 3.8
+       PLATFORM: x64
      - CONDA_PYTHON_VERSION: 3.7
        PLATFORM: x64
      - CONDA_PYTHON_VERSION: 3.7
@@ -34,7 +36,7 @@ install:
   - conda activate %ENV_NAME%
 
   - ps: Add-AppveyorMessage "Install package"
-  - pip install git+https://github.com/hyperspy/hyperspy.git
+  - pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
   # Fix issue with conda not in PATH anymore
   #- conda list
 
@@ -46,9 +48,9 @@ test_script:
   - pytest --mpl --pyargs hyperspy
   - ps: Add-AppveyorMessage "Testing completed."
 
-#after_test:
-#  - python setup.py clean
-#  - python setup.py bdist_wheel
+after_test:
+  - python setup.py clean
+  - python setup.py bdist_wheel
 
 artifacts:
   - path: dist\*.whl

@@ -44,18 +44,9 @@ jobs:
   - bash: |
       source activate $ENV_NAME
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
       conda list
     displayName: Install package
-
-  - bash: |
-      source activate $ENV_NAME
-      python setup.py sdist bdist_wheel
-    displayName: Generate distribution archives
-
-  - publish: $(Build.SourcesDirectory)/dist
-    artifact: dist-Linux-$(CONDA_PYTHON_VERSION)
-    displayName: Publish artifact
 
   - bash: |
       source activate $ENV_NAME
@@ -67,19 +58,28 @@ jobs:
       pytest --pyargs hyperspy
     displayName: Run test suite
 
-  # Uncomment to upload artefact to Github release
-  #- task: GithubRelease@0 
-  #  displayName: 'Update GitHub Release on tag only'
-  #  # Release only on tag (branch name start with 'refs/tags/')
-  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #  inputs:
-  #    # Set the token generated with github from the developer settings/personal access tokens menu
-  #    gitHubConnection: github_token_name
-  #    action: edit # Release should already have been created
-  #    tag: $(Build.SourceBranchName)
-  #    repositoryName: organisation_name/repository_name
-  #    assets: $(Build.SourcesDirectory)/dist/*
-  #    assetUploadMode: replace
+  # - bash: |
+  #     source activate $ENV_NAME
+  #     python setup.py sdist bdist_wheel
+  #   displayName: Generate distribution archives
+
+  # - publish: $(Build.SourcesDirectory)/dist
+  #   artifact: dist-Linux-$(CONDA_PYTHON_VERSION)
+  #   displayName: Publish artifact
+
+  #  Uncomment to upload artefact to Github release
+  # - task: GithubRelease@0
+  #   displayName: 'Update GitHub Release on tag only'
+  #   # Release only on tag (branch name start with 'refs/tags/')
+  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #   inputs:
+  #     # Set the token generated with github from the developer settings/personal access tokens menu
+  #     gitHubConnection: github_token_name
+  #     action: edit # Release should already have been created
+  #     tag: $(Build.SourceBranchName)
+  #     repositoryName: organisation_name/repository_name
+  #     assets: $(Build.SourcesDirectory)/dist/*
+  #     assetUploadMode: replace
 
 - job:
   displayName: vs2017-win2016
@@ -107,18 +107,9 @@ jobs:
   - bash: |
       source activate $ENV_NAME
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install ghttps://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
       conda list
     displayName: Install package
-
-  - bash: |
-      source activate $ENV_NAME
-      python setup.py sdist bdist_wheel
-    displayName: Generate distribution archives
-
-  - publish: $(Build.SourcesDirectory)/dist
-    artifact: dist-Windows-$(CONDA_PYTHON_VERSION)
-    displayName: Publish artifact
 
   - bash: |
       source activate $ENV_NAME
@@ -130,19 +121,28 @@ jobs:
       pytest --pyargs hyperspy
     displayName: Run test suite
 
-  # Uncomment to upload artefact to Github release
-  #- task: GithubRelease@0 
-  #  displayName: 'Update GitHub Release'
-  #  # Release only on tag (branch name start with 'refs/tags/')
-  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #  inputs:
-  #    # Set the token generated with github from the developer settings/personal access tokens menu
-  #    gitHubConnection: github_token_name
-  #    action: edit # Release should already have been created
-  #    tag: $(Build.SourceBranchName)
-  #    repositoryName: organisation_name/repository_name
-  #    assets: $(Build.SourcesDirectory)/dist/*
-  #    assetUploadMode: replace
+  # - bash: |
+  #     source activate $ENV_NAME
+  #     python setup.py sdist bdist_wheel
+  #   displayName: Generate distribution archives
+
+  # - publish: $(Build.SourcesDirectory)/dist
+  #   artifact: dist-Windows-$(CONDA_PYTHON_VERSION)
+  #   displayName: Publish artifact
+
+  #  Uncomment to upload artefact to Github release
+  # - task: GithubRelease@0
+  #   displayName: 'Update GitHub Release'
+  #   # Release only on tag (branch name start with 'refs/tags/')
+  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #   inputs:
+  #     # Set the token generated with github from the developer settings/personal access tokens menu
+  #     gitHubConnection: github_token_name
+  #     action: edit # Release should already have been created
+  #     tag: $(Build.SourceBranchName)
+  #     repositoryName: organisation_name/repository_name
+  #     assets: $(Build.SourcesDirectory)/dist/*
+  #     assetUploadMode: replace
 
 - job:
   displayName: macOS-10.14
@@ -176,18 +176,9 @@ jobs:
   - bash: |
       source activate $ENV_NAME
       # Install package using pip
-      pip install git+https://github.com/hyperspy/hyperspy.git
+      pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
       conda list
     displayName: Install package
-
-  - bash: |
-      source activate $ENV_NAME
-      python setup.py sdist bdist_wheel
-    displayName: Generate distribution archives
-
-  - publish: $(Build.SourcesDirectory)/dist
-    artifact: dist-MacOSX-$(CONDA_PYTHON_VERSION)
-    displayName: Publish artifact
 
   - bash: |
       source activate $ENV_NAME
@@ -199,17 +190,26 @@ jobs:
       pytest --pyargs hyperspy
     displayName: Run test suite
 
-  # Uncomment to upload artefact to Github release
-  #- task: GithubRelease@0 
-  #  displayName: 'Update GitHub Release on tag only'
-  #  # Release only on tag (branch name start with 'refs/tags/')
-  #  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #  inputs:
-  #    # Set the token generated with github from the developer settings/personal access tokens menu
-  #    gitHubConnection: github_token_name
-  #    action: edit # Release should already have been created
-  #    tag: $(Build.SourceBranchName)
-  #    repositoryName: organisation_name/repository_name
-  #    assets: $(Build.SourcesDirectory)/dist/*
-  #    assetUploadMode: replace
+  # - bash: |
+  #     source activate $ENV_NAME
+  #     python setup.py sdist bdist_wheel
+  #   displayName: Generate distribution archives
+
+  # - publish: $(Build.SourcesDirectory)/dist
+  #   artifact: dist-MacOSX-$(CONDA_PYTHON_VERSION)
+  #   displayName: Publish artifact
+
+  #  Uncomment to upload artefact to Github release
+  # - task: GithubRelease@0
+  #   displayName: 'Update GitHub Release on tag only'
+  #   # Release only on tag (branch name start with 'refs/tags/')
+  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  #   inputs:
+  #     # Set the token generated with github from the developer settings/personal access tokens menu
+  #     gitHubConnection: github_token_name
+  #     action: edit # Release should already have been created
+  #     tag: $(Build.SourceBranchName)
+  #     repositoryName: organisation_name/repository_name
+  #     assets: $(Build.SourcesDirectory)/dist/*
+  #     assetUploadMode: replace
 

@@ -6,13 +6,10 @@ env:
     - ENV=conda
     - ENV_NAME=test_env
     - MINIMAL_ENV=false
-    - DEPS_OPTIONAL="scikit-learn"
+    - DEPS_OPTIONAL="scikit-learn mrcz cython"
     - TEST_DEPS="pytest pytest-cov" # for pip installation
     - MPLBACKEND="agg"
     - PYTEST_MPL_ARGS="--mpl"
-
-services:
-  - xvfb
 
 matrix:
   include:
@@ -41,7 +38,7 @@ before_install:
 
 install:
   # Install the package
-  - pip install git+https://github.com/hyperspy/hyperspy.git
+  - pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
 
 script:
   - which python
