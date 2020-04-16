@@ -34,7 +34,7 @@ install:
   - conda activate %ENV_NAME%
 
   - ps: Add-AppveyorMessage "Install package"
-  - pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
+  - pip install  --no-deps https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
   # Fix issue with conda not in PATH anymore
   #- conda list
 
