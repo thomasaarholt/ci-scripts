@@ -1,5 +1,4 @@
 variables:
-  ENV_NAME: test_env
   MPLBACKEND: agg # Necessary when running test which generate matplotlib figure
   TEST_DEPS: pytest pytest-azurepipelines
 

@@ -1,19 +1,18 @@
 environment:
 
   global:
-    ENV_NAME: test_env
     MPLBACKEND: agg
 
   matrix:
-     - CONDA_PYTHON_VERSION: 3.8
+     - PYTHON_VERSION: 3.8
        PLATFORM: x64
-     - CONDA_PYTHON_VERSION: 3.7
+     - PYTHON_VERSION: 3.7
        PLATFORM: x64
-     - CONDA_PYTHON_VERSION: 3.7
+     - PYTHON_VERSION: 3.7
        PLATFORM: x86
-     - CONDA_PYTHON_VERSION: 3.6
+     - PYTHON_VERSION: 3.6
        PLATFORM: x64
-     - CONDA_PYTHON_VERSION: 3.6
+     - PYTHON_VERSION: 3.6
        PLATFORM: x86
        TAG_SCENARIO: true
 
@@ -49,9 +48,9 @@ test_script:
   - python -c "import hyperspy.api as hs"
   - ps: Add-AppveyorMessage "Testing completed."
 
-after_test:
-  - python setup.py clean
-  - python setup.py bdist_wheel
+# after_test:
+#   - python setup.py clean
+#   - python setup.py bdist_wheel
 
 artifacts:
   - path: dist\*.whl
@@ -60,8 +59,8 @@ artifacts:
 deploy:
   provider: GitHub
   auth_token:
-    # Add encrypted key 
-    secure: 
+    # Add encrypted key
+    secure:
   artifact: win_wheels  # upload wheels to release assets
   draft: false
   prerelease: false

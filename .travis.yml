@@ -1,41 +1,60 @@
 language: generic
 
 env:
-  # We set the default value in global and changed it in the matrix when necessary
+  # ENV can be "pip" or "conda" to select the environment
+  # PYTEST_ARGS sets the arguments for pytest
+  #
+  # pip only parameters
+  # -------------------
+  # PIP_SELECTOR sets the optional dependencies to install: "extra" parameters
+  #
+  # conda only parameters
+  # ---------------------
+  # PYTHON_VERSION sets the python version
+  #
   global:
-    - ENV=conda
-    - ENV_NAME=test_env
-    - MINIMAL_ENV=false
-    - DEPS_OPTIONAL="scikit-learn mrcz cython"
-    - TEST_DEPS="pytest pytest-cov" # for pip installation
-    - MPLBACKEND="agg"
-    - PYTEST_MPL_ARGS="--mpl"
+    - PIP_SELECTOR="all, tests"
+    - PYTEST_ARGS=""
 
 matrix:
   include:
-    # All tests run for the latest supported Python version in Linux
-  # - env: export CONDA_PYTHON_VERSION=3.7
-  # - env: export CONDA_PYTHON_VERSION=3.7; MINIMAL_ENV=true
-  - env: export ENV=pip
-    language: python
+  - name: "Linux, 3.8, pip"
+    env: export ENV=pip; PIP_SELECTOR="all, tests"
     python: 3.8
-  - env: export ENV=pip
-    language: python
+  - name: "Linux, 3.7, pip"
+    env: export ENV=pip; PIP_SELECTOR="all, tests"
     python: 3.7
-  - env: export ENV=pip; MINIMAL_ENV=true
-    language: python
+  - name: "Linux, 3.7, pip, minimum environment"
+    env: export ENV=pip; PIP_SELECTOR="tests"
     python: 3.7
-  - env: export ENV=pip
-    language: python
+  - name: "Linux, 3.6, pip"
+    env: export ENV=pip; PIP_SELECTOR="all, tests"
     python: 3.6
-  # - env: export CONDA_PYTHON_VERSION=3.8
+  - name: "MacOSX, 3.7, pip"
+    env: export ENV=pip;
+    os: osx
+    osx_image: xcode11.2
+  - name: "MacOSX, 3.8, pip"
+    env: export ENV=conda; F=3.8
+    os: osx
+    osx_image: xcode11.2
+  # - name: "MacOSX, 3.7, pip"
+  #   env: export ENV=conda; PYTHON_VERSION=3.7
   #   os: osx
-  # - env: export CONDA_PYTHON_VERSION=3.7
-  #   os: osx
+  #   osx_image: xcode11.2
   #   if: tag IS present
-  # - env: export CONDA_PYTHON_VERSION=3.6
+  # - name: "MacOSX, 3.6, pip"
+  #   env: export ENV=conda; PYTHON_VERSION=3.6
   #   os: osx
+  #   osx_image: xcode11.2
   #   if: tag IS present
+  - name: "Windows, 3.8, pip"
+    env: export ENV=pip; PIP_SELECTOR="all, tests"
+    os: windows
+    before_install:
+      - choco install python --version 3.8
+      - python -m pip install --upgrade pip
+    env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
 before_install:
   # Clone the ci-scritps repo to get the ci setup scripts and execute the script
@@ -44,22 +63,21 @@ before_install:
 
 install:
   # Install the package
-  - pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
+  # - pip install --user p -e .["${PIP_SELECTOR}"]
+  - pip install --user p https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip#egg=project["${PIP_SELECTOR}"]
 
 script:
   - which python
   - python -c 'import matplotlib.pyplot as plt; print("Matplotlib backend:", plt.get_backend())';
-  # We don't run image comparison when installing from pip because of the freetype version mismatch
-  - if [ $ENV == pip ]; then PYTEST_MPL_ARGS=""; fi
-  # - pytest --pyargs hyperspy --cov=hyperspy $PYTEST_MPL_ARGS;
+  # - pytest $PYTEST_ARGS;
   - python -c 'import hyperspy.api as hs'
 
-after_success:
-- coveralls
-- python setup.py bdist_wheel sdist;
+# after_success:
+# - coveralls
+# - python setup.py bdist_wheel sdist;
 
-before_deploy:
-- export DISTRIB=$(ls ./dist/*);
+# before_deploy:
+# - export DISTRIB=$(ls ./dist/*);
 
 deploy:
   provider: releases
@@ -70,4 +88,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    condition: $MINIMAL_ENV = false
+    condition: $ENV = pip
