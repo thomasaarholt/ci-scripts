@@ -1,4 +1,4 @@
-language: generic
+language: python
 
 env:
   # ENV can be "pip" or "conda" to select the environment
@@ -30,31 +30,35 @@ matrix:
   - name: "Linux, 3.6, pip"
     env: export ENV=pip; PIP_SELECTOR="all, tests"
     python: 3.6
-  - name: "MacOSX, 3.7, pip"
-    env: export ENV=pip;
-    os: osx
-    osx_image: xcode11.2
-  - name: "MacOSX, 3.8, pip"
-    env: export ENV=conda; F=3.8
-    os: osx
-    osx_image: xcode11.2
+  # - name: "MacOSX, 3.7, pip"
+  #   env: export ENV=pip;
+  #   os: osx
+  #   osx_image: xcode11.2
+  #   language: shell
+  # - name: "MacOSX, 3.8, pip"
+  #   env: export ENV=conda; F=3.8
+  #   os: osx
+  #   osx_image: xcode11.2
   # - name: "MacOSX, 3.7, pip"
   #   env: export ENV=conda; PYTHON_VERSION=3.7
   #   os: osx
   #   osx_image: xcode11.2
+  #   language: shell
   #   if: tag IS present
   # - name: "MacOSX, 3.6, pip"
   #   env: export ENV=conda; PYTHON_VERSION=3.6
   #   os: osx
   #   osx_image: xcode11.2
+  #   language: shell
   #   if: tag IS present
-  - name: "Windows, 3.8, pip"
-    env: export ENV=pip; PIP_SELECTOR="all, tests"
-    os: windows
-    before_install:
-      - choco install python --version 3.8
-      - python -m pip install --upgrade pip
-    env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+  # - name: "Windows, 3.8, pip"
+  #   env: export ENV=pip; PIP_SELECTOR="all, tests"
+  #   language: shell
+  #   os: windows
+  #   before_install:
+  #     - choco install python --version 3.8
+  #     - python -m pip install --upgrade pip
+  #   env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
 before_install:
   # Clone the ci-scritps repo to get the ci setup scripts and execute the script
@@ -63,8 +67,8 @@ before_install:
 
 install:
   # Install the package
-  # - pip install --user p -e .["${PIP_SELECTOR}"]
-  - pip install --user p https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip#egg=project["${PIP_SELECTOR}"]
+  # - pip install --upgrade -e .["${PIP_SELECTOR}"]
+  - pip install --upgrade https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip#egg=hyperspy["${PIP_SELECTOR}"]
 
 script:
   - which python

@@ -6,7 +6,11 @@ DIRECTORY="${BASH_SOURCE%/*}/"
 if [ $ENV == conda ]; then
   source $DIRECTORY/travis_setup_conda_$TRAVIS_OS_NAME.sh;
 else
-  pip3 install --upgrade --user pip
+  python --version
+  which python
+  which pip
+  pip install --upgrade pip
+  pip install --upgrade numpy
 fi
 
 
