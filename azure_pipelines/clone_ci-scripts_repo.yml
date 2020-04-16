@@ -1,0 +1,4 @@
+steps:
+- bash: |
+    git clone --depth 1 git://github.com/ericpre/ci-scripts.git
+  displayName: Clone ci-scripts repository

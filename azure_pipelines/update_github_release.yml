@@ -1,0 +1,16 @@
+parameters:
+- name: github_token_name  
+  default: ''
+
+steps:
+- task: GithubRelease@0
+  displayName: 'Update GitHub Release on tag only'
+  # Release only on tag (branch name start with 'refs/tags/')
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  inputs:
+    gitHubConnection: parameters.github_token_name
+    action: edit # Release should already have been created
+    tag: $(Build.SourceBranchName)
+    repositoryName: organisation_name/repository_name
+    assets: $(Build.SourcesDirectory)/dist/*
+    assetUploadMode: replace

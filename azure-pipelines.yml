@@ -12,6 +12,13 @@ trigger:
     # build on all branches
     - '*'
 
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: ericpre/ci-scripts
+      endpoint: ericpre # Azure DevOps service connection
+
 jobs:
 - job:
   displayName: ubuntu-16.04
@@ -27,15 +34,9 @@ jobs:
         PYTHON_VERSION: '3.6'
 
   steps:
-  - bash: |
-      git clone --depth 1 git://github.com/ericpre/ci-scripts.git
-    displayName: Clone ci-scripts repository
-
-  - bash: |
-      echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: Add conda to PATH
-
-  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
+  - template: azure_pipelines/clone_ci-scripts_repo.yml@templates
+  - template: azure_pipelines/activate_conda_linux.yml@templates
+  - template: azure_pipelines/setup_anaconda_packages.yml@templates
 
   - bash: |
       source activate $ENV_NAME
@@ -50,23 +51,13 @@ jobs:
       python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
-  # - template: ci-scripts/azure_pipelines/generate_distribution.yml
-
-  # - template: ci-scripts/azure_pipelines/publish_distribution.yml
-
-  #  Uncomment to upload artefact to Github release
-  # - task: GithubRelease@0
-  #   displayName: 'Update GitHub Release on tag only'
-  #   # Release only on tag (branch name start with 'refs/tags/')
-  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #   inputs:
-  #     # Set the token generated with github from the developer settings/personal access tokens menu
-  #     gitHubConnection: github_token_name
-  #     action: edit # Release should already have been created
-  #     tag: $(Build.SourceBranchName)
-  #     repositoryName: organisation_name/repository_name
-  #     assets: $(Build.SourcesDirectory)/dist/*
-  #     assetUploadMode: replace
+  # - template: azure_pipelines/generate_distribution.yml@clone_ci-scripts_repo.yml
+  # - template: azure_pipelines/publish_distribution.yml@clone_ci-scripts_repo.yml
+  # - template: azure_pipelines/update_github_release.yml@clone_ci-scripts_repo.yml
+  #   parameters:
+  #     # Set the token generated with github from the developer settings/personal
+  #     # access tokens menu in azure pipeline
+  #     github_token_name: ''
 
 - job:
   displayName: vs2017-win2016
@@ -80,14 +71,9 @@ jobs:
         PYTHON_VERSION: '3.6'
 
   steps:
-  - bash: |
-      git clone --depth 1 git://github.com/ericpre/ci-scripts.git
-    displayName: Clone ci-scripts repository
-
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: Add conda to PATH
-
-  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
+  - template: azure_pipelines/clone_ci-scripts_repo.yml@templates
+  - template: azure_pipelines/activate_conda_windows.yml@templates
+  - template: azure_pipelines/setup_anaconda_packages.yml@templates
 
   - bash: |
       source activate $ENV_NAME
@@ -103,22 +89,12 @@ jobs:
     displayName: Run test suite
 
   # - template: ci-scripts/azure_pipelines/generate_distribution.yml
-
   # - template: ci-scripts/azure_pipelines/publish_distribution.yml
-
-  #  Uncomment to upload artefact to Github release
-  # - task: GithubRelease@0
-  #   displayName: 'Update GitHub Release'
-  #   # Release only on tag (branch name start with 'refs/tags/')
-  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #   inputs:
-  #     # Set the token generated with github from the developer settings/personal access tokens menu
-  #     gitHubConnection: github_token_name
-  #     action: edit # Release should already have been created
-  #     tag: $(Build.SourceBranchName)
-  #     repositoryName: organisation_name/repository_name
-  #     assets: $(Build.SourcesDirectory)/dist/*
-  #     assetUploadMode: replace
+  # - template: ci-scripts/azure_pipelines/update_github_release.yml
+  #   parameters:
+  #     # Set the token generated with github from the developer settings/personal
+  #     # access tokens menu in azure pipeline
+  #     github_token_name: ''
 
 - job:
   displayName: macOS-10.14
@@ -132,20 +108,9 @@ jobs:
         PYTHON_VERSION: '3.6'
 
   steps:
-  - bash: |
-      git clone --depth 1 git://github.com/ericpre/ci-scripts.git
-    displayName: Clone ci-scripts repository
-
-  - bash: |
-      echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: Add conda to PATH
-
-  # On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory/
-  # We need to take ownership if we want to update conda or install packages globally
-  - bash: sudo chown -R $USER $CONDA
-    displayName: Take ownership of conda installation
-
-  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
+  - template: azure_pipelines/clone_ci-scripts_repo.yml@templates
+  - template: azure_pipelines/activate_conda_macos.yml@templates
+  - template: azure_pipelines/setup_anaconda_packages.yml@templates
 
   - bash: |
       source activate $ENV_NAME
@@ -161,20 +126,9 @@ jobs:
     displayName: Run test suite
 
   # - template: ci-scripts/azure_pipelines/generate_distribution.yml
-
   # - template: ci-scripts/azure_pipelines/publish_distribution.yml
-
-  #  Uncomment to upload artefact to Github release
-  # - task: GithubRelease@0
-  #   displayName: 'Update GitHub Release on tag only'
-  #   # Release only on tag (branch name start with 'refs/tags/')
-  #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-  #   inputs:
-  #     # Set the token generated with github from the developer settings/personal access tokens menu
-  #     gitHubConnection: github_token_name
-  #     action: edit # Release should already have been created
-  #     tag: $(Build.SourceBranchName)
-  #     repositoryName: organisation_name/repository_name
-  #     assets: $(Build.SourcesDirectory)/dist/*
-  #     assetUploadMode: replace
-
+  # - template: ci-scripts/azure_pipelines/update_github_release.yml
+  #   parameters:
+  #     # Set the token generated with github from the developer settings/personal
+  #     # access tokens menu in azure pipeline
+  #     github_token_name: ''
