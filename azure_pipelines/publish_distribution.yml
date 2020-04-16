@@ -1,0 +1,4 @@
+steps:
+- publish: $(Build.SourcesDirectory)/dist
+  artifact: dist-$(Agent.Name)-$(PYTHON_VERSION)
+  displayName: Publish artifact

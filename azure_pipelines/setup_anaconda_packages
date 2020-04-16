@@ -1,0 +1,4 @@
+steps:
+- bash: |
+    source ci-scripts/conda_setup_environment.sh
+  displayName: Setup Anaconda packages

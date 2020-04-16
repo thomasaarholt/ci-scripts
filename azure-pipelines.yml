@@ -20,11 +20,11 @@ jobs:
   strategy:
     matrix:
       Python38:
-        CONDA_PYTHON_VERSION: '3.8'
+        PYTHON_VERSION: '3.8'
       Python37:
-        CONDA_PYTHON_VERSION: '3.7'
+        PYTHON_VERSION: '3.7'
       Python36:
-        CONDA_PYTHON_VERSION: '3.6'
+        PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
@@ -35,10 +35,7 @@ jobs:
       echo "##vso[task.prependpath]$CONDA/bin"
     displayName: Add conda to PATH
 
-  - bash: |
-      source ci-scripts/conda_setup_environment.sh
-
-    displayName: Setup Anaconda packages
+  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
 
   - bash: |
       source activate $ENV_NAME
@@ -53,14 +50,9 @@ jobs:
       python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
-  # - bash: |
-  #     source activate $ENV_NAME
-  #     python setup.py sdist bdist_wheel
-  #   displayName: Generate distribution archives
+  # - template: ci-scripts/azure_pipelines/generate_distribution.yml
 
-  # - publish: $(Build.SourcesDirectory)/dist
-  #   artifact: dist-Linux-$(CONDA_PYTHON_VERSION)
-  #   displayName: Publish artifact
+  # - template: ci-scripts/azure_pipelines/publish_distribution.yml
 
   #  Uncomment to upload artefact to Github release
   # - task: GithubRelease@0
@@ -83,9 +75,9 @@ jobs:
   strategy:
     matrix:
       Python38:
-        CONDA_PYTHON_VERSION: '3.8'
+        PYTHON_VERSION: '3.8'
       Python36:
-        CONDA_PYTHON_VERSION: '3.6'
+        PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
@@ -95,9 +87,7 @@ jobs:
   - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
     displayName: Add conda to PATH
 
-  - bash: |
-      source ci-scripts/conda_setup_environment.sh
-    displayName: Setup Anaconda packages
+  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
 
   - bash: |
       source activate $ENV_NAME
@@ -112,14 +102,9 @@ jobs:
       python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
-  # - bash: |
-  #     source activate $ENV_NAME
-  #     python setup.py sdist bdist_wheel
-  #   displayName: Generate distribution archives
+  # - template: ci-scripts/azure_pipelines/generate_distribution.yml
 
-  # - publish: $(Build.SourcesDirectory)/dist
-  #   artifact: dist-Windows-$(CONDA_PYTHON_VERSION)
-  #   displayName: Publish artifact
+  # - template: ci-scripts/azure_pipelines/publish_distribution.yml
 
   #  Uncomment to upload artefact to Github release
   # - task: GithubRelease@0
@@ -142,9 +127,9 @@ jobs:
   strategy:
     matrix:
       Python38:
-        CONDA_PYTHON_VERSION: '3.8'
+        PYTHON_VERSION: '3.8'
       Python36:
-        CONDA_PYTHON_VERSION: '3.6'
+        PYTHON_VERSION: '3.6'
 
   steps:
   - bash: |
@@ -160,9 +145,7 @@ jobs:
   - bash: sudo chown -R $USER $CONDA
     displayName: Take ownership of conda installation
 
-  - bash: |
-      source ci-scripts/conda_setup_environment.sh
-    displayName: Setup Anaconda packages
+  - template: ci-scripts/azure_pipelines/setup_anaconda_packages.yml
 
   - bash: |
       source activate $ENV_NAME
@@ -177,14 +160,9 @@ jobs:
       python -c 'import hyperspy.api as hs'
     displayName: Run test suite
 
-  # - bash: |
-  #     source activate $ENV_NAME
-  #     python setup.py sdist bdist_wheel
-  #   displayName: Generate distribution archives
+  # - template: ci-scripts/azure_pipelines/generate_distribution.yml
 
-  # - publish: $(Build.SourcesDirectory)/dist
-  #   artifact: dist-MacOSX-$(CONDA_PYTHON_VERSION)
-  #   displayName: Publish artifact
+  # - template: ci-scripts/azure_pipelines/publish_distribution.yml
 
   #  Uncomment to upload artefact to Github release
   # - task: GithubRelease@0

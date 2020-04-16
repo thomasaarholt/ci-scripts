@@ -1,0 +1,5 @@
+steps:
+- bash: |
+    source activate $ENV_NAME
+    python setup.py sdist bdist_wheel
+  displayName: Generate distribution archives
