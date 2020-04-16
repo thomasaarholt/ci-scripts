@@ -1,4 +1,5 @@
 ENV_NAME="test_env"
+
 conda update -y conda
 conda config --append channels conda-forge
 conda create --yes --quiet --name $ENV_NAME python=$PYTHON_VERSION
