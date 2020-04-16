@@ -3,17 +3,30 @@ Continuous integration (CI) scripts for the hyperspy ecosystem.
 
 # Documentation
 
-The idea of this repository is to help setting CI services (Travis, Appveyor and Azure pipelines) for python libraries typically used in the hyperspy ecosystem. It provides:
-- setting up CI consistently across the different CIs
-- conda installation (dependencies and channels defined in conda_environment.yml)
-- pip installation
+The idea of this repository is to help setting up CI services (Travis, Appveyor and Azure pipelines) for python libraries typically used in the hyperspy ecosystem. It provides:
+- setting up CI consistently across the different CIs in a conda or a virtual environment (linux on travis)
 - publishing of artefacts (python packages, etc.) on appveyor and azure pipelines
 - upload to Github release from azure pipelines
 
 ## How to use
 
 Use the yml configuration file (.travis.yml, appveyor.yml and azure_pipelines.yml) of this repository, copy them into your repository and adjust them for your repository by following the comments in the configuration file.
-For demonstration purposes, these scripts run the hyperspy test suite.
+For demonstration purposes, these scripts will install hyperspy and check it is installed.
+
+1. Clone this repository
+2. run the scripts to setup the python environment (environment, platform and CI provider dependent)
+3. install the library to test using pip
+4. run the test using pytest
+
+### pip environment
+
+The dependencies are installed when installing with pip.
+
+### conda environment
+
+The dependencies are installed before installing the library with pip. The dependencies and channel are defined in:
+- `conda_environment.yml`
+- `conda_environment_dev.yml`
 
 
 ## Setting up CI services

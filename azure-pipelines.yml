@@ -102,7 +102,7 @@ jobs:
   - bash: |
       source activate $ENV_NAME
       # Install package using pip
-      pip install ghttps://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
+      pip install https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
       conda list
     displayName: Install package
 
