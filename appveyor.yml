@@ -2,16 +2,12 @@ environment:
 
   global:
     MPLBACKEND: agg
+    PLATFORM: x64
 
   matrix:
      - PYTHON_VERSION: 3.8
-       PLATFORM: x64
      - PYTHON_VERSION: 3.7
-       PLATFORM: x64
-     - PYTHON_VERSION: 3.7
-       PLATFORM: x86
      - PYTHON_VERSION: 3.6
-       PLATFORM: x64
      - PYTHON_VERSION: 3.6
        PLATFORM: x86
        TAG_SCENARIO: true
