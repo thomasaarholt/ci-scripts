@@ -76,20 +76,3 @@ script:
   # - pytest $PYTEST_ARGS;
   - python -c 'import hyperspy.api as hs'
 
-# after_success:
-# - coveralls
-# - python setup.py bdist_wheel sdist;
-
-# before_deploy:
-# - export DISTRIB=$(ls ./dist/*);
-
-deploy:
-  provider: releases
-  api_key:
-    # Add the secure key created and set in the travis account settings
-    secure: # For example ${GITHUB_TOKEN_ERICPRE}
-  file: "${DISTRIB}"
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: $ENV = pip
