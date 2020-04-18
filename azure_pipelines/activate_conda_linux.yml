@@ -1,4 +1,0 @@
-steps:
-- bash: |
-    echo "##vso[task.prependpath]$CONDA/bin"
-  displayName: Add conda to PATH
