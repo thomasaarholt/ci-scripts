@@ -6,7 +6,9 @@ env:
   #
   # pip only parameters
   # -------------------
-  # PIP_SELECTOR sets the optional dependencies to install: "extra" parameters
+  # PIP_SELECTOR sets the optional dependencies to install: "extra" parameters.
+  # They need to be described in the `extras_require` library in the setup.py file.
+  #
   #
   # conda only parameters
   # ---------------------
@@ -62,17 +64,19 @@ matrix:
 
 before_install:
   # Clone the ci-scritps repo to get the ci setup scripts and execute the script
-  - git clone --depth 1 git://github.com/ericpre/ci-scripts.git
+  - git clone --depth 1 git://github.com/hyperspy/ci-scripts.git
   - source ci-scripts/travis/setup_travis.sh
 
 install:
-  # Install the package
+  # Install the package dependencies from the "extra" parameters in your PIP_SELECTOR
   # - pip install --upgrade -e .["${PIP_SELECTOR}"]
+  - # Install the package
   - pip install --upgrade https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip#egg=hyperspy["${PIP_SELECTOR}"]
 
 script:
   - which python
   - python -c 'import matplotlib.pyplot as plt; print("Matplotlib backend:", plt.get_backend())';
+  # To use pytest, make sure your PIP_SELECTOR has installed pytest
   # - pytest $PYTEST_ARGS;
   - python -c 'import hyperspy.api as hs'
 
