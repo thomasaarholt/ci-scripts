@@ -10,23 +10,41 @@ The idea of this repository is to help setting up CI services (Travis, Appveyor 
 
 ## How to use
 
-Use the yml configuration file (.travis.yml, appveyor.yml and azure_pipelines.yml) of this repository, copy them into your repository and adjust them for your repository by following the comments in the configuration file.
-For demonstration purposes, these scripts will install hyperspy and check it is installed.
+Use the yml configuration file (.travis.yml, appveyor.yml and azure_pipelines.yml) of this repository as a template, copy them into your repository and adjust them for your repository by following the comments in the configuration file.
+For demonstration purposes, these scripts will install hyperspy and check that it is installed.
 
-1. Clone this repository
+1. Clone this repository (or a fork of it)
 2. run the scripts to setup the python environment (environment, platform and CI provider dependent)
 3. install the library to test using pip
 4. run the test using pytest
 
+
 ### pip environment
 
-The dependencies are installed when installing with pip.
+The dependencies are installed when installing with pip. It is advised to define the test dependencies using [extra-requires](https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-extras-optional-features-with-their-own-dependencies).
 
 ### conda environment
 
-The dependencies are installed before installing the library with pip. The dependencies and channel are defined in:
+The dependencies are installed before installing the library with pip. The dependencies and channels are defined in:
 - `conda_environment.yml`
 - `conda_environment_dev.yml`
+
+### Useful tips
+
+To keep the CI scripts simple and cover a range of typical python installation, it is convenient to use a testing matrix :
+- travis: use virtualenv and pip installation on linux only (travis has limited macOS and Windows capacity)
+- azure pipelines: all platforms (Linux, macOS and Windows) using conda environment; upload artefacts (test results, packages, etc.)
+
+To "monitor" failure following a dependencies update, it is useful to have an idea of where and when packages are updated following the release of a dependency:
+- python packages of are first updated on pypi
+- shorty after a package is released on pypi (typically a few hours to a few days), the package will be updated on conda-forge too.
+
+Since packages from the `defaults` channel are uploaded less frequently than on `conda-forge` the priority order of these two channels will determine how recent are the dependencies packages. Considering that the most recent packages are always available from pypi, the latest supported dependencies release can be covered by using packages from pypi (on travis, for example) while using conda environment with the `defaults` channel as highest priority channel will provide more stable testing matrix. This approach can be used to quickly figure out if a failure of the testing matrix is due to the update of a dependency.
+
+### Example of repositories using these scripts:
+
+- https://github.com/hyperspy/hyperspy
+- https://github.com/LumiSpy/lumispy
 
 
 ## Setting up CI services
