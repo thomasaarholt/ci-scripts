@@ -56,7 +56,7 @@ steps:
 - bash: |
     source activate $ENV_NAME
     # Install package using pip
-    pip install --no-deps https://github.com/hyperspy/hyperspy/archive/RELEASE_next_minor.zip
+    pip install --no-deps https://github.com/thomasaarholt/hyperspy/archive/master.zip
     conda list
   displayName: Install package
 
